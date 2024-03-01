@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+
+import '../constants.dart'; 
 
 class moviesSlider extends StatelessWidget {
   const moviesSlider({
-    super.key,
+    super.key, required this.snapshot,
   });
+
+  final AsyncSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +17,20 @@ class moviesSlider extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal, 
         physics: const BouncingScrollPhysics(), // Adding bouncing scroll physics
-        itemCount: 20, // Placeholder item count
-        itemBuilder: (context, index) {
+        itemCount: snapshot.data.length, // Placeholder item count
+        itemBuilder: (context, item) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8), // Rounded corners for the container
-              child: Container(
+              child: SizedBox(
                 height: 250, 
                 width: 125, 
-                color: Colors.white, 
+                child: Image.network(
+                  filterQuality: FilterQuality.high,
+                  fit: BoxFit.cover,
+                  '${Constants.imagePath}${snapshot.data[item].posterPath}',
+                ), 
               ),
             ),
           );

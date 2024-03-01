@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart'; 
-import 'package:carousel_slider/carousel_slider.dart'; // Importing carousel_slider package
+import 'package:carousel_slider/carousel_slider.dart';
+import '../constants.dart'; // Importing carousel_slider package
 
 class cinemaSlider extends StatelessWidget {
   const cinemaSlider({
-    super.key,
+    super.key, required this.snapshot,
   });
+
+  final AsyncSnapshot snapshot;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
-        itemCount: 10, // Number of items in the carousel
+        itemCount: snapshot.data.length, // Number of items in the carousel
         options: CarouselOptions(
           height: 300, 
           autoPlay: true, // Auto play enabled
@@ -24,10 +27,14 @@ class cinemaSlider extends StatelessWidget {
         itemBuilder: (context, itemIndex, pageViewIndex) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(20), // Rounded corners for the container
-            child: Container(
+            child: SizedBox(
               height: 300,
               width: 200,
-              color: Colors.white, 
+              child: Image.network(
+                filterQuality: FilterQuality.high,
+                  fit: BoxFit.cover,
+                  '${Constants.imagePath}${snapshot.data[itemIndex].posterPath}',
+              ), 
             ),
           );
         },
