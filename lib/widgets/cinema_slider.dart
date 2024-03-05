@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'; 
 import 'package:carousel_slider/carousel_slider.dart';
-import '../constants.dart'; // Importing carousel_slider package
+import '../constants.dart'; 
 
 class cinemaSlider extends StatelessWidget {
   const cinemaSlider({

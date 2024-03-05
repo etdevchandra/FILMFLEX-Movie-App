@@ -19,13 +19,13 @@ class TVShows {
 
   factory TVShows.fromJson(Map<String, dynamic> json) {
     return TVShows(
-      name: json["name"],
-      backDropPath: json["backdrop_path"],
-      originalName: json["original_name"],
-      overview: json["overview"],
-      posterPath: json["poster_path"],
-      firstAirDate: json["first_air_date"],
-      voteAverage: json["vote_average"].toDouble(),
+      name: json["name"] ?? '', 
+      backDropPath: json["backdrop_path"] ?? '', 
+      originalName: json["original_name"] ?? '', 
+      overview: json["overview"] ?? '', 
+      posterPath: json["poster_path"] ?? '', 
+      firstAirDate: json["first_air_date"] ?? '', 
+      voteAverage: (json["vote_average"] ?? 0.0).toDouble(), 
     );
   }
 }

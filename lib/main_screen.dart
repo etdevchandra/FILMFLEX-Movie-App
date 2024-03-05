@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart'; 
-// Import screens for Movies, TV Shows, and Watch Later 
-import 'package:filmflex_movie_application/tab_bar_screens/home_screen.dart'; 
-import 'package:filmflex_movie_application/tab_bar_screens/movies_screen.dart'; 
-import 'package:filmflex_movie_application/tab_bar_screens/tv_shows_screen.dart'; 
-import 'package:filmflex_movie_application/tab_bar_screens/watch_later_screen.dart'; 
-
+import 'package:flutter/material.dart';
+import 'package:filmflex_movie_application/delegates/movie_search_delegate.dart';
+import 'package:filmflex_movie_application/delegates/tv_show_search_delegate.dart';
+import 'package:filmflex_movie_application/tab_bar_screens/home_screen.dart';
+import 'package:filmflex_movie_application/tab_bar_screens/movies_screen.dart';
+import 'package:filmflex_movie_application/tab_bar_screens/tv_shows_screen.dart';
+import 'package:filmflex_movie_application/tab_bar_screens/watch_later_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -19,31 +19,76 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this); // Initialize TabController with 4 tabs
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose(); // Dispose TabController
+    _tabController.dispose();
     super.dispose();
+  }
+
+  void _showSearchChoiceDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.black, 
+          title: Text(
+            'What are you searching for?',
+            style: TextStyle(
+              color: Colors.white, 
+              fontSize: 18, 
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: Text(
+                    'Movies',
+                    style: TextStyle(
+                      color: Colors.yellow, 
+                      fontSize: 14, 
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    showSearch(context: context, delegate: MovieSearchDelegate());
+                  },
+                ),
+                Padding(padding: EdgeInsets.all(8.0)),
+                GestureDetector(
+                  child: Text(
+                    'TV Shows',
+                    style: TextStyle(
+                      color: Colors.yellow, 
+                      fontSize: 14, 
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    showSearch(context: context, delegate: TVShowSearchDelegate());
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black, // Set the AppBar background to black
-        title: Image.asset(
-          'assets/filmflex_logo.png', 
-          fit: BoxFit.cover,
-          height: 55,
-        ),
+        backgroundColor: Colors.black,
+        title: Image.asset('assets/filmflex_logo.png', fit: BoxFit.cover, height: 55),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {
-              // Need to implement search action
-            },
+            onPressed: () => _showSearchChoiceDialog(context),
           ),
           IconButton(
             icon: Icon(Icons.menu),
@@ -58,22 +103,17 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
             alignment: Alignment.centerLeft,
             child: TabBar(
               controller: _tabController,
-              indicatorColor: Colors.yellow, // Set the indicator (underline) to yellow
-              labelColor: Colors.white, // Set the label color for selected tab to white
-              labelStyle: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold, // Bold text for selected tab
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 12, 
-              ),
+              indicatorColor: Colors.yellow,
+              labelColor: Colors.white,
+              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(fontSize: 12),
               tabs: const [
                 Tab(text: 'HOME'),
                 Tab(text: 'MOVIES'),
                 Tab(text: 'TV SHOWS'),
                 Tab(text: 'WATCH LATER'),
               ],
-              isScrollable: true, // Set to false to stretch tabs across the screen
+              isScrollable: true,
             ),
           ),
         ),
@@ -81,11 +121,10 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Placeholder for respective screens
-          HomeScreen(), 
-          MoviesScreen(), 
-          TVShowsScreen(), 
-          WatchLaterScreen(), 
+          HomeScreen(),
+          MoviesScreen(),
+          TVShowsScreen(),
+          WatchLaterScreen(),
         ],
       ),
     );

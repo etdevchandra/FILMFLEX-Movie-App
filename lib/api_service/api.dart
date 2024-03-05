@@ -26,8 +26,6 @@ class Api {
       'https://api.themoviedb.org/3/tv/top_rated?api_key=${Constants.apiKey}';
   static const _onTheAirTVShowsUrl =
       'https://api.themoviedb.org/3/tv/on_the_air?api_key=${Constants.apiKey}';
-  static const _popularTVShowsUrl =
-      'https://api.themoviedb.org/3/tv/popular?api_key=${Constants.apiKey}';
   static const _trendingTVShowsUrl =
       'https://api.themoviedb.org/3/trending/tv/week?api_key=${Constants.apiKey}';
   
@@ -133,16 +131,6 @@ class Api {
     }
   }
 
-  Future<List<TVShows>> getPopularTVShows() async {
-    final response = await http.get(Uri.parse(_popularTVShowsUrl));
-    if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      return decodedData.map((tvshows) => TVShows.fromJson(tvshows)).toList();
-    } else {
-      throw Exception('Failed to load popular tv shows. Status code: ${response.statusCode}');
-    }
-  }
-
   Future<List<TVShows>> getOnTheAirTVShows() async {
     final response = await http.get(Uri.parse(_onTheAirTVShowsUrl));
     if (response.statusCode == 200) {
@@ -153,4 +141,91 @@ class Api {
     }
   }
   
+    // Search Movies
+  Future<List<Movie>> searchMoviesByTitle(String query) async {
+    // Encode the query to ensure it's safe for URL usage
+    final String encodedQuery = Uri.encodeComponent(query);
+
+    // Use the encodedQuery directly within the URL string
+    final url = Uri.parse('https://api.themoviedb.org/3/search/movie?api_key=${Constants.apiKey}&language=en-US&query=$encodedQuery&page=1&include_adult=false');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      final List<Movie> movies = (data['results'] as List)
+        .map((movieData) => Movie.fromJson(movieData))
+        .toList();
+      return movies;
+    } else {
+      throw Exception('Failed to load search results for query: $query');
+    }
+  }
+
+  Future<List<Movie>> searchMoviesByActor(String query) async {
+    final String encodedQuery = Uri.encodeComponent(query);
+    final String peopleSearchUrl = 'https://api.themoviedb.org/3/search/person?api_key=${Constants.apiKey}&language=en-US&query=$encodedQuery&page=1&include_adult=false';
+
+    final response = await http.get(Uri.parse(peopleSearchUrl));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      final List<dynamic> people = data['results'];
+
+      
+      if (people.isNotEmpty) {
+        final List<Movie> movies = (people.first['known_for'] as List)
+          .where((credit) => credit['media_type'] == 'movie')
+          .map((movieData) => Movie.fromJson(movieData))
+          .toList();
+        return movies;
+      } else {
+        return [];
+      }
+    } else {
+      throw Exception('Failed to load search results for people');
+    }
+  }
+
+// Search TV Shows  
+Future<List<TVShows>> searchTVShowsByTitle(String query) async {
+  final String encodedQuery = Uri.encodeComponent(query);
+  final url = Uri.parse('https://api.themoviedb.org/3/search/tv?api_key=${Constants.apiKey}&language=en-US&query=$encodedQuery&page=1&include_adult=false');
+
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    final List<TVShows> shows = (data['results'] as List)
+        .map((showData) => TVShows.fromJson(showData))
+        .toList();
+    return shows;
+  } else {
+    throw Exception('Failed to load search results for TV shows with title: $query');
+  }
+}
+
+Future<List<TVShows>> searchTVShowsByActor(String query) async {
+  final String encodedQuery = Uri.encodeComponent(query);
+  final String peopleSearchUrl = 'https://api.themoviedb.org/3/search/person?api_key=${Constants.apiKey}&language=en-US&query=$encodedQuery&page=1&include_adult=false';
+
+  final response = await http.get(Uri.parse(peopleSearchUrl));
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    final List<dynamic> people = data['results'];
+
+    if (people.isNotEmpty) {
+      final List<TVShows> shows = (people.first['known_for'] as List)
+          .where((credit) => credit['media_type'] == 'tv')
+          .map((showData) => TVShows.fromJson(showData))
+          .toList();
+      return shows;
+    } else {
+      return [];
+    }
+  } else {
+    throw Exception('Failed to load search results for TV shows with actor: $query');
+  }
+}
+
+
 }

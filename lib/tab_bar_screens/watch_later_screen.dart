@@ -13,10 +13,10 @@ class _WatchLaterScreenState extends State<WatchLaterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black, // Set AppBar background to black
+        backgroundColor: Colors.black, 
         title: const Text(
           'TV Shows & Movies',
-          style: TextStyle(fontWeight: FontWeight.bold), // Make text bold
+          style: TextStyle(fontWeight: FontWeight.bold), 
         ),
       ),
       body: GridView.builder(

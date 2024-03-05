@@ -14,7 +14,6 @@ class _TVShowsScreenState extends State<TVShowsScreen> {
   late Future<List<TVShows>> airingTonightTVShows;
   late Future<List<TVShows>> topRatedTVShows;
   late Future<List<TVShows>> trendingTVShows;
-  late Future<List<TVShows>> popularTVShows;
   late Future<List<TVShows>> onTheAirTVShows;
 
   @override
@@ -23,7 +22,6 @@ class _TVShowsScreenState extends State<TVShowsScreen> {
     airingTonightTVShows = Api().getAiringTonightTVShows();
     topRatedTVShows = Api().getTopRatedTVShows();
     trendingTVShows = Api().getTrendingTVShows();
-    popularTVShows = Api().getPopularTVShows();
     onTheAirTVShows = Api().getOnTheAirTVShows();
   }
 
@@ -98,31 +96,6 @@ class _TVShowsScreenState extends State<TVShowsScreen> {
               SizedBox(
                 child: FutureBuilder(
                   future: trendingTVShows,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return moviesSlider(snapshot: snapshot);
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Popular TV Shows',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                child: FutureBuilder(
-                  future: popularTVShows,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
