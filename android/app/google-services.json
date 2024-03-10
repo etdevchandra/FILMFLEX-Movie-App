@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "802541222980",
+    "project_id": "filmflex-movie-application",
+    "storage_bucket": "filmflex-movie-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802541222980:android:0df192622d8c8eee5f1011",
+        "android_client_info": {
+          "package_name": "com.example.filmflex_movie_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802541222980-bh1714efcs9e7dnhuaa3rcfnlgklhfiq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.filmflex_movie_application",
+            "certificate_hash": "5f5a8842c868ac49e7c81803297c162d18a70308"
+          }
+        },
+        {
+          "client_id": "802541222980-09c60935opc5686chjvfhf3k3flmf2rn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqiR9P-OLZoI_sKyu6-NfhZVWV-V5k6VE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802541222980-09c60935opc5686chjvfhf3k3flmf2rn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "802541222980-ubr6i972nuac8qigv6e2e3hnpvplk821.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.filmflexMovieApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
