@@ -3,24 +3,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:filmflex_movie_application/services/firebase_auth_methods.dart';
-import 'package:filmflex_movie_application/main_screen.dart'; 
+import 'package:filmflex_movie_application/main_screen.dart';
 import 'package:filmflex_movie_application/user_screens/sign_up_screen.dart';
 import 'package:filmflex_movie_application/user_screens/forgot_password_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+  _SignInScreenState createState() => _SignInScreenState();
+}
 
+class _SignInScreenState extends State<SignInScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool rememberMe = false;
+
+  @override
+  Widget build(BuildContext context) {
     void _signInUser() async {
       final authMethods = Provider.of<FirebaseAuthMethods>(context, listen: false);
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
       bool success = await authMethods.signInWithEmail(email: email, password: password, context: context);
+
       if (success) {
+        if (rememberMe) {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('email', email);
+          await prefs.setString('password', password);
+        }
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
       }
     }
@@ -89,10 +102,20 @@ class SignInScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                   decoration: _inputDecoration('Password'),
                 ),
+                CheckboxListTile(
+                  title: Text("Remember me", style: TextStyle(color: Colors.white)),
+                  value: rememberMe,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      rememberMe = value!;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: _navigateToForgotPassword, 
+                    onPressed: _navigateToForgotPassword,
                     child: Text(
                       'Forgot password?',
                       style: GoogleFonts.roboto(
@@ -126,45 +149,41 @@ class SignInScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 62,
-                  child: Row(
-                    children: const [
-                      Expanded(child: Divider(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('OR', style: TextStyle(color: Colors.white, fontSize: 15,
-                          fontWeight: FontWeight.bold)),
-                      ),
-                      Expanded(child: Divider(color: Colors.white)),
-                    ],
-                  ),
+                const SizedBox(height: 62),
+                Row(
+                  children: const [
+                    Expanded(child: Divider(color: Colors.white)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('OR', style: TextStyle(color: Colors.white, fontSize: 15,
+                        fontWeight: FontWeight.bold)),
+                    ),
+                    Expanded(child: Divider(color: Colors.white)),
+                  ],
                 ),
                 const SizedBox(height: 2),
                 SignInButton(
                   Buttons.google,
                   text: "Sign in with Google",
-                  onPressed: _signInWithGoogle, 
+                  onPressed: _signInWithGoogle,
                 ),
                 const SizedBox(height: 44),
-                Center(
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen())),
-                    child: RichText(
-                      text: TextSpan(
-                        text: "Don't have an account? ",
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen())),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Don't have an account? ",
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Sign Up',
+                          style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

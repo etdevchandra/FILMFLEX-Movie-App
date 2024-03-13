@@ -5,6 +5,8 @@ import 'package:filmflex_movie_application/tab_bar_screens/home_screen.dart';
 import 'package:filmflex_movie_application/tab_bar_screens/movies_screen.dart';
 import 'package:filmflex_movie_application/tab_bar_screens/tv_shows_screen.dart';
 import 'package:filmflex_movie_application/tab_bar_screens/watch_later_screen.dart';
+import 'package:filmflex_movie_application/user_screens/sign_in_screen.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -33,12 +35,12 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.black, 
+          backgroundColor: Colors.black,
           title: Text(
             'What are you searching for?',
             style: TextStyle(
-              color: Colors.white, 
-              fontSize: 18, 
+              color: Colors.white,
+              fontSize: 18,
             ),
           ),
           content: SingleChildScrollView(
@@ -48,8 +50,8 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
                   child: Text(
                     'Movies',
                     style: TextStyle(
-                      color: Colors.yellow, 
-                      fontSize: 14, 
+                      color: Colors.yellow,
+                      fontSize: 14,
                     ),
                   ),
                   onTap: () {
@@ -62,8 +64,8 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
                   child: Text(
                     'TV Shows',
                     style: TextStyle(
-                      color: Colors.yellow, 
-                      fontSize: 14, 
+                      color: Colors.yellow,
+                      fontSize: 14,
                     ),
                   ),
                   onTap: () {
@@ -79,22 +81,31 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
     );
   }
 
+  Future<void> _signOut() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email'); 
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SignInScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Image.asset('assets/filmflex_logo.png', fit: BoxFit.cover, height: 55),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Image.asset('assets/filmflex_logo.png', fit: BoxFit.cover, height: 55),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () => _showSearchChoiceDialog(context),
           ),
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              // Need to implement menu action
-            },
+          PopupMenuButton<int>(
+            onSelected: (item) => _onSelected(context, item),
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(value: 0, child: Text('Sign Out')),
+            ],
           ),
         ],
         bottom: PreferredSize(
@@ -128,5 +139,13 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
         ],
       ),
     );
+  }
+
+  void _onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        _signOut();
+        break;
+    }
   }
 }

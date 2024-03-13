@@ -78,7 +78,7 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
             ],
           ),
           onTap: () {
-            // Implement action on tap
+            
           },
         );
       },
@@ -87,7 +87,7 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
 
   @override
 Widget buildSuggestions(BuildContext context) {
-    // Optionally implement suggestions
+    
     return Container();
   }
 }
