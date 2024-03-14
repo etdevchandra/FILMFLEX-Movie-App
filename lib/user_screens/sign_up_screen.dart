@@ -127,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                 ),
 
-                const SizedBox(height: 52),
+                const SizedBox(height: 48),
                 Center(
                   child: GestureDetector(
                     onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignInScreen())),

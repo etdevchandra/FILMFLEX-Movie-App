@@ -61,7 +61,6 @@ class NetworkController extends GetxController {
     }
   }
 
-  
   Future<void> checkInitialConnectivity() async {
     await _checkInternetConnection(); 
   }

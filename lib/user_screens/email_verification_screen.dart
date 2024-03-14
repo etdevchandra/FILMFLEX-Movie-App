@@ -48,7 +48,7 @@ class EmailVerificationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 44),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 190, 161, 1),

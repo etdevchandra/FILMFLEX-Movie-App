@@ -62,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   alignment: Alignment.topLeft,
                   child: Image.asset('assets/filmflex_logo.png', height: 48),
                 ),
-                const SizedBox(height: 34),
+                const SizedBox(height: 28),
                 Text(
                   'THE GATEWAY TO A CINEMATIC UNIVERSE.',
                   style: GoogleFonts.blackHanSans(
@@ -75,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 18),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -95,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: const TextStyle(color: Colors.white),
                   decoration: _inputDecoration('Email'),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -103,7 +103,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   decoration: _inputDecoration('Password'),
                 ),
                 CheckboxListTile(
-                  title: Text("Remember me", style: TextStyle(color: Colors.white)),
+                  title: Text(
+                    "Remember me",
+                    style: GoogleFonts.roboto( 
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14, 
+                      ),
+                    ),
+                  ),
                   value: rememberMe,
                   onChanged: (bool? value) {
                     setState(() {
@@ -127,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 SizedBox(
                   width: 350,
                   height: 45,
@@ -149,7 +157,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 62),
+                const SizedBox(height: 20), 
                 Row(
                   children: const [
                     Expanded(child: Divider(color: Colors.white)),
@@ -161,13 +169,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     Expanded(child: Divider(color: Colors.white)),
                   ],
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 20), 
                 SignInButton(
                   Buttons.google,
                   text: "Sign in with Google",
                   onPressed: _signInWithGoogle,
                 ),
-                const SizedBox(height: 44),
+                const SizedBox(height: 20), 
                 GestureDetector(
                   onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen())),
                   child: RichText(

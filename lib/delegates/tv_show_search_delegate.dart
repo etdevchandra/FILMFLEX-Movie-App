@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:filmflex_movie_application/api_service/api.dart';
 import 'package:filmflex_movie_application/models/tv_shows.dart';
@@ -33,7 +31,6 @@ class TVShowSearchDelegate extends SearchDelegate<TVShows?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // Combine both searches into a single async operation to avoid nested FutureBuilders
     return FutureBuilder<List<TVShows>>(
       future: _searchTVShows(query),
       builder: (context, snapshot) {
@@ -51,10 +48,8 @@ class TVShowSearchDelegate extends SearchDelegate<TVShows?> {
   }
 
   Future<List<TVShows>> _searchTVShows(String query) async {
-    // First, search TV shows by title
     List<TVShows> tvShows = await _api.searchTVShowsByTitle(query);
     if (tvShows.isEmpty) {
-      // If no TV shows are found by title, search by actor
       tvShows = await _api.searchTVShowsByActor(query);
     }
     return tvShows;
@@ -66,6 +61,7 @@ class TVShowSearchDelegate extends SearchDelegate<TVShows?> {
       itemBuilder: (context, index) {
         final TVShows tvShow = tvShows[index];
         return ListTile(
+          // ignore: unnecessary_null_comparison
           leading: tvShow.posterPath != null && tvShow.posterPath.isNotEmpty
               ? Image.network('${Constants.imagePath}${tvShow.posterPath}')
               : null,
@@ -88,7 +84,6 @@ class TVShowSearchDelegate extends SearchDelegate<TVShows?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Optionally implement suggestions
     return Container();
   }
 }

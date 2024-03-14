@@ -195,8 +195,6 @@ class _MoviesScreenState extends State<MoviesScreen> {
                   },
                 ),
               ),
-
-
             ],
           ),
         ),

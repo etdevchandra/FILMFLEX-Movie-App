@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:filmflex_movie_application/api_service/api.dart';
 import 'package:filmflex_movie_application/models/movies.dart';
@@ -33,7 +31,6 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // Combine both searches into a single async operation to avoid nested FutureBuilders
     return FutureBuilder<List<Movie>>(
       future: _searchMovies(query),
       builder: (context, snapshot) {
@@ -50,7 +47,6 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
     );
   }
 
-  // This method first tries to search by title, and if it finds no movies, it searches by actor
   Future<List<Movie>> _searchMovies(String query) async {
     List<Movie> movies = await _api.searchMoviesByTitle(query);
     if (movies.isEmpty) {
@@ -65,6 +61,7 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
       itemBuilder: (context, index) {
         final movie = movies[index];
         return ListTile(
+          // ignore: unnecessary_null_comparison
           leading: movie.posterPath != null && movie.posterPath.isNotEmpty
               ? Image.network('${Constants.imagePath}${movie.posterPath}')
               : null,
@@ -87,7 +84,6 @@ class MovieSearchDelegate extends SearchDelegate<Movie?> {
 
   @override
 Widget buildSuggestions(BuildContext context) {
-    
     return Container();
   }
 }
